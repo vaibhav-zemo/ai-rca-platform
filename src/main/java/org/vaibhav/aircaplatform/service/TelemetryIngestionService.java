@@ -54,7 +54,7 @@ public class TelemetryIngestionService {
                     incidentRepository.save(liveIncident);
                     log.warn("🚨 New Incident generated for Trace context: {}. Initiating state capture.", telemetry.traceId());
 
-                    RcaReport report = rcaOrchestratorService.runAnalysis(telemetry.exception(), telemetry.message());
+                    RcaReport report = rcaOrchestratorService.runAnalysis(telemetry.exception(), telemetry.message(), telemetry.service());
 
                     // 3. Save the structured analysis output to rca_reports table
                     RcaReportEntity entity = RcaReportEntity.builder()
@@ -76,7 +76,7 @@ public class TelemetryIngestionService {
                 }
             }
         } catch (Exception ex) {
-            log.error("Failed to process string payload from stream topology block: {}", ex.getMessage());
+            log.error("Failed to process string payload from stream topology block: ", ex);
         }
     }
 }
